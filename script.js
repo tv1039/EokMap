@@ -28,7 +28,7 @@ const CC = {
     addItemLabel:'＋ 항목 추가',
     schedDateFmt:(y,m)=>`${y}년 ${m}월`,
     strings:{
-      sectionTitle:'재무 정보 입력',
+      sectionTitle:'지금 이대로면 목표 가능할까?',
       sectionDesc:'정확한 정보를 입력할수록 더 현실적인 플랜을 드릴 수 있어요',
       cardAssets:'현재 자산', cardAssetsSub:'보유 자산 (원)',
       cardIncome:'월 수입',   cardIncomeSub:'세후 월 수입 (원)',
@@ -132,7 +132,7 @@ const CC = {
     addItemLabel:'＋ 項目追加',
     schedDateFmt:(y,m)=>`${y}年${m}月`,
     strings:{
-      sectionTitle:'財務情報入力',
+      sectionTitle:'このままで、目標いけそう？',
       sectionDesc:'正確な情報を入力するほど、より現実的なプランが作れます',
       cardAssets:'現在資産',   cardAssetsSub:'保有資産 (円)',
       cardIncome:'月収',       cardIncomeSub:'税引後月収 (円)',
@@ -239,7 +239,7 @@ const CC = {
       return `${mn[m-1]} ${y}`;
     },
     strings:{
-      sectionTitle:'Financial Info',
+      sectionTitle:'Am I actually on track to hit my goal?',
       sectionDesc:'The more accurate your inputs, the more realistic your plan',
       cardAssets:'Current Assets', cardAssetsSub:'Assets you own ($)',
       cardIncome:'Monthly Income', cardIncomeSub:'After-tax income ($)',
