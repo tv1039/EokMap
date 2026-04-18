@@ -928,7 +928,38 @@ function pctColor(pct) {
 /* ══════════════════════════════
    이벤트 바인딩
 ══════════════════════════════ */
+/* ══════════════════════════════
+   iOS 키보드 레이아웃 밀림 방지
+   Visual Viewport API 사용:
+   키보드가 올라올 때 포커스된 입력창이
+   키보드에 가리지 않도록 스크롤 보정
+══════════════════════════════ */
+function initKeyboardFix() {
+  const vv = window.visualViewport;
+  if (!vv) return;
+
+  let prevHeight = vv.height;
+
+  vv.addEventListener('resize', () => {
+    const currentHeight = vv.height;
+    const keyboardOpened = currentHeight < prevHeight;
+    prevHeight = currentHeight;
+
+    if (!keyboardOpened) return;
+
+    // 키보드가 열릴 때 포커스된 요소가 가려지지 않도록 스크롤
+    const focused = document.activeElement;
+    if (!focused || (focused.tagName !== 'INPUT' && focused.tagName !== 'TEXTAREA')) return;
+
+    setTimeout(() => {
+      focused.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  initKeyboardFix();
 
   attachNumericInput($('currentAssets'), $('assetsPreview'));
   attachNumericInput($('monthlyIncome'),  $('incomePreview'));

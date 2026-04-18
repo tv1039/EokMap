@@ -37,7 +37,12 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+
+html {
+  scroll-behavior: smooth;
+  /* iOS에서 키보드 등장 시 레이아웃이 밀리는 현상 방지 */
+  height: -webkit-fill-available;
+}
 
 body {
   font-family: 'Noto Sans KR', -apple-system, sans-serif;
@@ -45,10 +50,13 @@ body {
   color: var(--text1);
   line-height: 1.6;
   min-height: 100vh;
+  min-height: -webkit-fill-available; /* iOS Safari 키보드 레이아웃 보정 */
   -webkit-font-smoothing: antialiased;
   /* 한국어는 단어 단위로, 영문은 필요시 줄바꿈 */
   word-break: break-word;
   overflow-wrap: break-word;
+  /* 두 번 탭 확대 방지 (pinch-to-zoom은 허용) */
+  touch-action: manipulation;
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -67,11 +75,14 @@ body {
 .header {
   background: linear-gradient(160deg, #0b0b1c 0%, #10102a 60%, #0d0d20 100%);
   border-bottom: none;
-  padding: 14px 0;
+  /* 상단 노치/상태바 safe area 반영 */
+  padding: max(14px, env(safe-area-inset-top)) 0 14px;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 100;
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 4px 32px rgba(0,0,0,.55);
 }
 /* 보라→파랑 그라디언트 언더라인 */
@@ -92,10 +103,9 @@ body {
   padding: 0 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
 }
-.logo { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+.logo { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
 
 /* ── 국가 선택 버튼 ── */
 .country-selector {
@@ -151,6 +161,10 @@ body {
   .logo-badge { font-size: .62rem; padding: 3px 8px; }
   .country-btn { font-size: 1.15rem; padding: 3px 5px; }
 }
+/* 매우 좁은 화면: 배지 숨김 */
+@media (max-width: 320px) {
+  .logo-badge { display: none; }
+}
 .logo-coin {
   font-size: 2.2rem;
   animation: coinSpin 5s ease-in-out infinite;
@@ -181,8 +195,9 @@ body {
 }
 /* 목표 금액 뱃지 */
 .logo-badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   padding: 3px 10px;
   background: rgba(124,111,247,.15);
   border: 1px solid rgba(124,111,247,.35);
@@ -191,8 +206,10 @@ body {
   font-weight: 700;
   color: var(--purple2);
   white-space: nowrap;
-  flex-shrink: 0;
-  margin-left: auto;
+  /* flex: 1로 로고와 국기 버튼 사이 공간을 채움 → 겹침 방지 */
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
   letter-spacing: .02em;
 }
 
@@ -1092,7 +1109,8 @@ body {
 /* Footer */
 .footer {
   border-top: 1px solid var(--border);
-  padding: 18px 16px;
+  /* 하단 홈바(safe area) 영역 침범 방지 */
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
   text-align: center;
   font-size: .75rem;
   color: var(--text3);
