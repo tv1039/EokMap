@@ -155,10 +155,32 @@ body {
   border-radius: 50%;
 }
 
-/* 작은 화면: 로고 텍스트 축소 */
+/* 모바일: 2줄 헤더
+   1줄 — 로고(코인 + 앱이름)
+   2줄 — 목표금액 배지 + 국기 버튼 */
 @media (max-width: 480px) {
-  .logo-text { display: none; }
-  .logo-badge { font-size: .62rem; padding: 3px 8px; }
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+
+  /* 1줄: 로고가 전체 너비를 차지해 혼자 한 줄에 배치 */
+  .logo {
+    flex: 1 0 100%;
+  }
+
+  /* logo-text 유지 (기존에 숨겼던 거 복원) */
+  .logo-text { display: flex; }
+
+  /* 2줄: 목표금액 배지가 남은 공간을 채우고 국기 버튼과 나란히 */
+  .logo-badge {
+    flex: 1 1 auto;
+    font-size: .65rem;
+    padding: 4px 10px;
+    justify-content: flex-start;
+  }
+
+  .country-selector { flex-shrink: 0; }
   .country-btn { font-size: 1.15rem; padding: 3px 5px; }
 }
 /* 매우 좁은 화면: 배지 숨김 */
